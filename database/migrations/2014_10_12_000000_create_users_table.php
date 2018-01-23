@@ -16,10 +16,18 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email', 32)->unique();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            //optionals
+            $table->string('lastname',32)->nullable();
+            $table->string('phone', 16)->nullable();
+            $table->string('province', 32)->nullable();
+            //per dire che un dato non è auto-increment (secondo parametro) e che è unsigned (terzo parametro)
+            $table->smallInteger('age',false, true)->nullable();
+
         });
     }
 
