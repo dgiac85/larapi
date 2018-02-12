@@ -58,7 +58,12 @@ class UsersController extends Controller
     {
         //
         try{
-            return User::findOrFail($id);
+            return response()->json(
+                [
+                    'data' => User::findOrFail($id),
+                    'success' => true
+                ]
+            );  
         }
         catch (\Exception $e){
             return response()->json(
