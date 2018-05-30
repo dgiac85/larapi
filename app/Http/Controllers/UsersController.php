@@ -57,22 +57,29 @@ class UsersController extends Controller
     public function show($id)
     {
         //
+        $data=[];
+        $message='';
         try{
-            return response()->json(
+            /*return response()->json(
                 [
                     'data' => User::findOrFail($id),
                     'success' => true
                 ]
-            );  
+            );  */
+            $data=User::findOrFail($id);
+            $success=true;
         }
         catch (\Exception $e){
-            return response()->json(
+            /*return response()->json(
                 [
                     'data' => [],
                     'message' => $e->getMessage()
                 ]
-            );
+            );*/
+            $success = true;
+            $message = $e->getMessage();
         }
+        return compact('data','message','success');
     }
 
     /**
@@ -84,6 +91,7 @@ class UsersController extends Controller
     public function edit($id)
     {
         //
+    
     }
 
     /**
@@ -96,6 +104,29 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $data=[];
+        $message='';
+        try{
+            $User=User::findOrFail($id);
+            $success=true;
+            //aggiorniamo i dati con i dati ricevuti dalla request
+            $postData=$request->except('id','_method'); //update di tutti i dati eccetto l'id
+            $postData['password']=bcrypt('test'); //la funzione serve a criptare la password
+            $success =$User->update($postData);
+            $data = $User;
+      
+        }
+        catch (\Exception $e){
+            /*return response()->json(
+                [
+                    'data' => [],
+                    'message' => $e->getMessage()
+                ]
+            );*/
+            $success = true;
+            $message = $e->getMessage();
+        }
+        return compact('data','message','success');
     }
 
     /**
