@@ -46,6 +46,30 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         //
+         //
+         $data=[];
+         $message='';
+         try{
+             $User=new User();
+    
+             //aggiorniamo i dati con i dati ricevuti dalla request
+             $postData=$request->except('id','_method'); //update di tutti i dati eccetto l'id
+             $postData['password']=bcrypt('test'); //la funzione serve a criptare la password
+
+             $User->fill($postData);
+             $success = $User->save();
+
+
+             $data = $User;
+       
+         }
+         catch (\Exception $e){
+
+             $success = true;
+             $message = $e->getMessage();
+         }
+         return compact('data','message','success');
+
     }
 
     /**
